@@ -1,0 +1,35 @@
+return function (t)
+ if t.run then 
+  spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_LOW, spi.DATABITS_8, 0)
+
+  print(dofile("RC522.lc")({com="init",pin=t.pin_ss}))
+  
+  local function appendHex(t)
+   local str = ""
+   for i,v in ipairs(t) do
+    str = str..string.format("%X",t[i])
+   end
+   return str
+  end
+
+ tmr.alarm(0, 500, tmr.ALARM_AUTO, function()
+ local isTagNear, cardType = dofile("RC522.lc")({com="request",pin=pin_ss})
+  if isTagNear == true then
+   tmr.stop(0)
+   local _, serialNo = dofile("RC522.lc")({com="anticoll",pin=pin_ss})
+   serialNo=appendHex(serialNo)
+   tmr.start(0)
+   if s.rfid_mode=="add" then
+    print(dofile("key.lua")({init="add",key=serialNo})) -- add key
+   end
+	  if s.rfid_mode=="auth" then
+    print(dofile("key.lua")({init="auth",key=serialNo})) -- auth key
+	  end
+	  if s.rfid_mode=="del" then
+    print(dofile("key.lua")({init="del",key=serialNo})) -- del key
+	  end
+  end
+end)
+ end
+ return t.run
+end

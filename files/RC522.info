@@ -1,0 +1,22 @@
+{
+  "name": "RC522",
+  "type":"module",
+  "description": "Template example.",
+  "version": "0.0.1",
+  "homepage": "",
+  "page": "RC522.html",
+  "repository": {
+   "type": "git",
+   "url": "https://github.com/bondrogeen/RC522"
+  },
+  "keywords": ["esp8266", "lua", "nodemcu", "webserver","RC522"],
+  "author": {
+    "name":"bondrogeen",
+    "email":"bondrogeen@gmail.com"
+  },
+  "native":{
+
+  },
+  "license": "MIT",
+  "modules": ["file", "gpio", "sjson", "spi"]
+}
