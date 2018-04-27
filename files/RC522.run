@@ -1,35 +1,28 @@
 return function (t)
- if t.run then 
-  spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_LOW, spi.DATABITS_8, 0)
-
-  print(dofile("RC522.lc")({com="init",pin=t.pin_ss}))
-  
-  local function appendHex(t)
-   local str = ""
-   for i,v in ipairs(t) do
-    str = str..string.format("%X",t[i])
-   end
-   return str
-  end
-
+if t.run then 
+ RC522="auth"    
+ spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_LOW, spi.DATABITS_8, 0)
+ print(dofile("RC522_SPI.lua")({init=true,pin=t.pin_ss}))  
+    
  tmr.alarm(0, 500, tmr.ALARM_AUTO, function()
- local isTagNear, cardType = dofile("RC522.lc")({com="request",pin=pin_ss})
-  if isTagNear == true then
+ local isTagNear, cardType = dofile("RC522_SPI.lua")({request=true,pin=t.pin_ss})
+  if isTagNear then
    tmr.stop(0)
-   local _, serialNo = dofile("RC522.lc")({com="anticoll",pin=pin_ss})
-   serialNo=appendHex(serialNo)
-   tmr.start(0)
-   if s.rfid_mode=="add" then
-    print(dofile("key.lua")({init="add",key=serialNo})) -- add key
+   local _, serialNo = dofile("RC522_SPI.lua")({anticoll=true,pin=t.pin_ss})   
+    print(serialNo)
+   if RC522=="add" then
+    print(dofile("RC522_key.lua")({add=serialNo})) -- add key
    end
-	  if s.rfid_mode=="auth" then
-    print(dofile("key.lua")({init="auth",key=serialNo})) -- auth key
+	  if not RC522 or RC522=="auth" then
+    print(dofile("RC522_key.lua")({auth=serialNo})) -- auth key
 	  end
-	  if s.rfid_mode=="del" then
-    print(dofile("key.lua")({init="del",key=serialNo})) -- del key
+	  if RC522=="del" then
+    print(dofile("RC522_key.lua")({del=serialNo})) -- del key
 	  end
+    tmr.start(0)
   end
 end)
+
  end
  return t.run
 end

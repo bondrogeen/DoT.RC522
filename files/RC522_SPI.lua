@@ -84,35 +84,43 @@ local function card_write(command, data)
   return  err, back_data, back_length
 end
 
+local function toHex(t)
+ local s = ""
+ for i,v in ipairs(t) do
+  s=s..string.format("%X",t[i])
+ end
+ return s
+end
+
 local function anticoll()
-  local back_data,num,serial,err = {}, {}, 0
+  local data,num,serial,err = {}, {}, 0
   dev_write(0x0D, 0x00)
   num[1] = 0x93
   num[2] = 0x20
-  err, back_data, _ = card_write(0x0C, num)
+  err, data, _ = card_write(0x0C, num)
   if not err then
-    if table.maxn(back_data) == 5 then
-      for i, v in ipairs(back_data) do
-        serial = bit.bxor(serial, back_data[i])
+    if table.maxn(data) == 5 then
+      for i, v in ipairs(data) do
+        serial = bit.bxor(serial, data[i])
       end
-      if serial ~= back_data[4] then
+      if serial ~= data[4] then
         err=true
       end
     else
       err=true
     end
   end
-  return error, back_data
+  return error, toHex(data)
 end
 
 local function request()
- local err,back_bits,back_data = true, 0
+ local err,bits,data = true, 0
  dev_write(0x0D, 0x07)
- err, back_data, back_bits = card_write(0x0C, { 0x26 })
- if err or (back_bits ~= 0x10) then
+ err, data, bits = card_write(0x0C, { 0x26 })
+ if err or (bits ~= 0x10) then
   return false, nil
  end
- return true, back_data
+ return true, toHex(data)
 end
 
 local function init()
@@ -132,7 +140,7 @@ return "RC522 Firmware Version: 0x"..string.format("%X", dev_read(0x37))
 end
 return function (t)
 pin_ss = t.pin
-if t.com=="request" then return request()end
-if t.com=="init" then return init()end
-if t.com=="anticoll" then return anticoll()end
+if t.request then return request()end
+if t.init then return init()end
+if t.anticoll then return anticoll()end
 end

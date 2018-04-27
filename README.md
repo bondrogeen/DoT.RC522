@@ -1,6 +1,6 @@
 # RC522 (development)
 
-Module MFRC522 RFID-Reader
+MFRC522 RFID-Reader
 
 
 

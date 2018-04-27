@@ -50,20 +50,48 @@
 </head>
 
 <body>
+<div id="loader" class="loader hide"></div>
+ <div id="sideNav" class="sidenav">
+  <span href="javascript:void(0)" class="close" onclick="document.getElementById('sideNav').classList.toggle('open');">&times;</span>
+  <div class="in"></div>
+  <a href="http://dot.codedevice.ru/example/" target="_blank">Example css</a>
+  <a href="https://github.com/bondrogeen/dot" target="_blank">GitHub</a>
+  <a href="http://dot.codedevice.ru" target="_blank">DOT</a>
+ </div>
+ <div class="sideopen warning"><a onclick="document.getElementById('sideNav').classList.toggle('open');">&equiv;</a></div>
+ <ul class="nav fix warning" id="topNav">
+  <li><a href="#" class="brand">DOT</a></li>
+  <li><a href="settings.html">Settings</a></li>
+  <li><a href="service.html">Service</a></li>
+  <li class="-exit"><a href="#" id="btn_exit" onclick="logout()">Exit</a></li>
+  <li class="-icon"><a href="#" onclick="document.getElementById('topNav').classList.toggle('res');">&equiv;</a></li>
+ </ul>
+ <div id="Modal" class="modal hide">
+  <div class="m-cont">
+   <span class="close" onclick="modclose();">&times;</span>
+   <div class="m-body">
+    <p>Save settings?</p>
+   </div>
+   <div class="m-foo">
+    <button class="success">Yes</button>
+    <button class="danger">No</button>
+   </div>
+  </div>
+ </div>
 	<div class="cont">
 		<div class="row">
-			<div class="xs-12 sm-2 lg-2" style="min-width: 150px;">
+			<div class="s12 m2 l2">
 			</div>
-			<div class="xs-12 sm-10 lg-9 ">
+			<div class="s12 m10 l9 ">
 				<div class="row">
 					<div class="xs-12">
 						<h1>RFID RC522</h1>
 					</div>
 				</div>
 				<div class="row">
-					<div class="xs-12 sm-6 lg-4">
+					<div class="s12 m6 l4">
 						<h3>Mode</h3>
-						<div class="group three">
+						<div class="group three success">
 							<input type="radio" name="rfid_mode" value="add" onchange="mode()" id="s_1">
 							<label for="s_1">add</label>
 							<input checked="" type="radio" name="rfid_mode" value="auth" onchange="mode()" id="s_2">
@@ -74,7 +102,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="xs-12">
+					<div class="s12">
 						<h3>Keys</h3>
 						<div id="key" class="key">
 						</div>
@@ -93,7 +121,7 @@
 				if (req.status < 400) {
 					callback(req.responseText);
 				} else {
-					callback(req.status);
+					callback(false);
 				}
 			});
 			req.send(JSON.stringify(data));
@@ -107,18 +135,15 @@
 			}
 		}
 		function mode() {
-			var data = {
-				init: "save"
-			};
-			data.rfid_mode = check_rad("rfid_mode");
-			send("web_control.lua", data, function(res) {
+			var data = {};
+			data.mode = check_rad("rfid_mode");
+			send("RC522_key.lua", data, function(res) {
 				if (res !== "false") {}
 			});
 		}
 		function del(d) {
 			send("RC522_key.lua", {
-				init: "del",
-				key: d
+				del: d
 			}, function(res) {
 				if (res === "true") {
 					document.getElementById(d).remove();
@@ -130,9 +155,8 @@
 		}, 10000);
 
 		function keyGet() {
-			send("RC522_key.lua", {
-				init: "get"
-			}, function(res) {
+			send("RC522_key.json", {}, function(res) {
+    console.log(res);
 				if (res !== "false" || res !== "error") {
 					try {
 						res = JSON.parse(res);
@@ -154,28 +178,10 @@
 			});
 		}
 		keyGet();
-		function openNav() {
-			var side = document.getElementById("mySidenav")
-			if (side.style.width === "200px") {
-				side.style.width = "0px";
-			} else {
-				side.style.width = "200px";
-			}
-		}
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
+
 		function logout() {
 			document.cookie = "id=";
 			location.href = '/login.html';
-		}
-		function nav() {
-			var x = document.getElementById("myTopnav");
-			if (x.classList.contains("res")) {
-				x.classList.remove('res');
-			} else {
-				x.classList.add('res');
-			}
 		}
 	</script>
 </body>
