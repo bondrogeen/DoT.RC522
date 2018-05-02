@@ -92,13 +92,19 @@
 					<div class="s12 m6 l4">
 						<h3>Mode</h3>
 						<div class="group three success">
-							<input type="radio" name="rfid_mode" value="add" onchange="mode()" id="s_1">
+							<input type="radio" name="rfid_mode" value="add" onchange="mode();" id="s_1">
 							<label for="s_1">add</label>
-							<input checked="" type="radio" name="rfid_mode" value="auth" onchange="mode()" id="s_2">
+							<input checked="" type="radio" name="rfid_mode" value="auth" onchange="mode();" id="s_2">
 							<label for="s_2">auth</label>
-							<input type="radio" name="rfid_mode" value="del" onchange="mode()" id="s_3">
+							<input type="radio" name="rfid_mode" value="del" onchange="mode();" id="s_3">
 							<label for="s_3">del</label>
 						</div>
+					</div>
+					<div class="s12 m6 l6">
+					<h3>Control</h3>
+						<div class="group">
+					  <button class="success" onclick="relay();">Open</button>
+					 </div>
 					</div>
 				</div>
 				<div class="row">
@@ -106,7 +112,7 @@
 						<h3>Keys</h3>
 						<div id="key" class="key">
 						</div>
-						<button class="grey" onclick="keyGet()">Refresh</button>
+						<button class="grey" onclick="keyGet();">Refresh</button>
 					</div>
 				</div>
 			</div>
@@ -138,6 +144,14 @@
 			var data = {};
 			data.mode = check_rad("rfid_mode");
 			send("RC522_key.lua", data, function(res) {
+				if (res !== "false") {}
+			});
+		}
+  function relay() {
+   console.log("Open");
+			var data = {};
+			data.relay = "true";
+			send("RC522_dev.lua", data, function(res) {
 				if (res !== "false") {}
 			});
 		}

@@ -1,9 +1,10 @@
 {
   "run" : false,
-  "pin_ss" : 6,
+  "pin_ss" : 0,
   "time" : 500,
   "pin_relay":1,
+  "del_relay":1000,
   "pin_buz":2,
-  "pin_btn":3
+  "pin_btn":4
   
 }

@@ -1,10 +1,10 @@
 {
  "name": "RC522",
  "type": "module",
- "description": "RFID RF522.",
- "version": "0.0.2",
+ "description": "Physical Access Control System RFID RF522",
+ "version": "0.0.3",
  "img": "https://raw.githubusercontent.com/bondrogeen/RC522/master/doc/logo.png",
- "files": ["RC522.init", "RC522.info", "RC522_key.lua", "RC522_SPI.lua", "RC522.run", "RC522.html", "RC522_key.json"],
+ "files": ["RC522.init", "RC522.info", "RC522_dev.lua", "RC522_key.lua", "RC522_SPI.lua", "RC522.run", "RC522.html", "RC522_key.json"],
  "homepage": "",
  "page": ["RC522.html"],
  "repository": {
@@ -26,26 +26,8 @@
    "id": "pin_ss",
    "val": 0,
    "type": "select",
-   "values": [0, 1, 2, 3, 4],
+   "values": [0],
    "name": "GPIO pin SS"
-  }, {
-   "id": "pin_relay",
-   "val": 1,
-   "type": "select",
-   "values": [0, 1, 2, 3, 4],
-   "name": "GPIO pin relay"
-  }, {
-   "id": "pin_buz",
-   "val": 2,
-   "type": "select",
-   "values": [0, 1, 2, 3, 4],
-   "name": "GPIO pin buzzer"
-  }, {
-   "id": "pin_btn",
-   "val": 3,
-   "type": "select",
-   "values": [0, 1, 2, 3, 4],
-   "name": "GPIO pin buttone"
   }, {
    "id": "time",
    "val": 500,
@@ -53,8 +35,33 @@
    "min": 100,
    "max": 2000,
    "name": "Polling time RC522"
+  }, {
+   "id": "pin_relay",
+   "val": 1,
+   "type": "select",
+   "values": [1, 2],
+   "name": "GPIO pin relay"
+  }, {
+   "id": "del_relay",
+   "val": 1000,
+   "type": "number",
+   "min": 100,
+   "max": 9000,
+   "name": "Relay delay"
+  }, {
+   "id": "pin_buz",
+   "val": 2,
+   "type": "select",
+   "values": [1, 2],
+   "name": "GPIO pin buzzer"
+  }, {
+   "id": "pin_btn",
+   "val": 4,
+   "type": "select",
+   "values": [3, 4],
+   "name": "GPIO pin buttone"
   }
  ],
  "license": "MIT",
- "modules": ["file", "gpio", "sjson", "spi"]
+ "modules": ["file", "gpio", "sjson", "spi", "bit"]
 }
