@@ -1,7 +1,7 @@
 {
  "name": "RC522",
  "type": "module",
- "description": "Physical Access Control System RFID RF522",
+ "description": "Physical Access Control System RFID RC522",
  "version": "0.0.3",
  "img": "https://raw.githubusercontent.com/bondrogeen/RC522/master/doc/logo.png",
  "files": ["RC522.init", "RC522.info", "RC522_dev.lua", "RC522_key.lua", "RC522_SPI.lua", "RC522.run", "RC522.html", "RC522_key.json"],
