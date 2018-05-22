@@ -23,8 +23,8 @@ RC522.timer:register(1000, tmr.ALARM_AUTO, function()
     pause=10
     local access = dofile("RC522_key.lua")({auth=serialNo})
     if M then 
-     M.pub("RC522/card",serialNo)
-     M.pub("RC522/access",access)
+     M.pub("RC522/info/card",serialNo)
+     M.pub("RC522/info/access",access)
     end
     dofile("RC522_dev.lua")({relay=access})
     end
