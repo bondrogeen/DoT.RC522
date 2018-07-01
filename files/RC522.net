@@ -2,9 +2,6 @@ return function (t)
 if(t.run)then
 local mytimer = tmr.create()
 mytimer:register(10000, tmr.ALARM_SINGLE, function (t) 
- if(M) then
- M.pub("RC522/comm/button","")
- end
 t:unregister() end)
 mytimer:start()
 end

@@ -1,9 +1,9 @@
 
 local function buz(t)
- gpio.write(RC522.pin_buz,gpio.HIGH)
+ gpio.write(_RC522.pin_buz,gpio.HIGH)
  local mytimer=tmr.create()
  mytimer:register(t or 1000,tmr.ALARM_SINGLE,function(t)
-  gpio.write(RC522.pin_buz, gpio.LOW)
+  gpio.write(_RC522.pin_buz, gpio.LOW)
   t:unregister()
   end)
  mytimer:start()
@@ -13,10 +13,10 @@ end
 local function relay(d)
  if d=="true" then
  buz()
- gpio.write(RC522.pin_relay,gpio.HIGH)
+ gpio.write(_RC522.pin_relay,gpio.HIGH)
  local mytimer=tmr.create()
- mytimer:register(RC522.del_relay,tmr.ALARM_SINGLE,function(t)
-  gpio.write(RC522.pin_relay,gpio.LOW)
+ mytimer:register(_RC522.del_relay,tmr.ALARM_SINGLE,function(t)
+  gpio.write(_RC522.pin_relay,gpio.LOW)
   t:unregister()
  end)
  mytimer:start()
@@ -27,15 +27,15 @@ local function relay(d)
 end
 
 local function init()
- gpio.mode(RC522.pin_buz,gpio.OUTPUT)
- gpio.mode(RC522.pin_relay,gpio.OUTPUT)
- gpio.mode(RC522.pin_btn,gpio.INT,gpio.PULLUP)
+ gpio.mode(_RC522.pin_buz,gpio.OUTPUT)
+ gpio.mode(_RC522.pin_relay,gpio.OUTPUT)
+ gpio.mode(_RC522.pin_btn,gpio.INT,gpio.PULLUP)
  function set0(level)
   tmr.delay(50000)
   dofile("RC522_dev.lua")({relay="true"})
   print("pin2 "..level)
  end
- gpio.trig(RC522.pin_btn,"down",set0)
+ gpio.trig(_RC522.pin_btn,"down",set0)
 end
 
 return function (t)

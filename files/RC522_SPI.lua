@@ -1,17 +1,15 @@
-local pin_ss
-
 local function dev_write(a,v)
- gpio.write(pin_ss, gpio.LOW)
+ gpio.write(_RC522.pin_ss, gpio.LOW)
  spi.send(1, bit.band(bit.lshift(a,1),0x7E),v)
- gpio.write(pin_ss, gpio.HIGH)
+ gpio.write(_RC522.pin_ss, gpio.HIGH)
 end
 
 local function dev_read(address)
  local val=0;
- gpio.write(pin_ss, gpio.LOW)
+ gpio.write(_RC522.pin_ss, gpio.LOW)
  spi.send(1,bit.bor(bit.band(bit.lshift(address,1),0x7E),0x80))
  val=spi.recv(1,1)
- gpio.write(pin_ss, gpio.HIGH)
+ gpio.write(_RC522.pin_ss, gpio.HIGH)
  return string.byte(val)
 end
 
@@ -95,8 +93,9 @@ local function request()
 end
 
 local function init()
-print("init p = "..pin_ss)
-gpio.mode(pin_ss,gpio.OUTPUT)
+print("init p = ".._RC522.pin_ss)
+spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_LOW, spi.DATABITS_8, 0)
+gpio.mode(_RC522.pin_ss,gpio.OUTPUT)
 dev_write(0x01,0x0F)
 dev_write(0x2A,0x8D)
 dev_write(0x2B,0x3E)
@@ -110,7 +109,6 @@ end
 return "RC522 Firmware Version: 0x"..string.format("%X", dev_read(0x37))
 end
 return function (t)
-pin_ss = t.pin
 if t.request then return request()end
 if t.init then return init()end
 if t.anticoll then return anticoll()end

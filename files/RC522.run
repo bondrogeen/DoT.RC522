@@ -1,43 +1,38 @@
 return function (t)
 if t.run then 
-RC522=t
-pause=0
-spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_LOW, spi.DATABITS_8, 0)
-print(dofile("RC522_SPI.lua")({init=true,pin=t.pin_ss}))
+_RC522=t
+print(dofile("RC522_SPI.lua")({init=true}))
 print(dofile("RC522_dev.lua")({init=true}))
-  
-RC522.timer = tmr.create()
-RC522.timer:register(1000, tmr.ALARM_AUTO, function()
- local isTagNear, cardType = dofile("RC522_SPI.lua")({request=true,pin=t.pin_ss})
- if pause~=0 then pause=pause-1 end
- if isTagNear and pause==0 then
-  RC522.timer:stop()
-  local serialNo = dofile("RC522_SPI.lua")({anticoll=true,pin=t.pin_ss})   
+_RC522.timer = tmr.create()
+_RC522.timer:register(1000, tmr.ALARM_AUTO, function()
+ local isTagNear, cardType = dofile("RC522_SPI.lua")({request=true})
+ if isTagNear then
+  _RC522.timer:stop()
+  local serialNo = dofile("RC522_SPI.lua")({anticoll=true})   
   print(serialNo)
   if serialNo then 
-   if RC522.mode=="add"then 
+   if _RC522.mode=="add"then 
     print(dofile("RC522_key.lua")({add=serialNo})) 
     dofile("RC522_dev.lua")({buz=300})
    end
-	  if not RC522.mode or RC522.mode=="auth"then 
-    pause=10
+	  if not _RC522.mode or _RC522.mode=="auth"then 
     local access = dofile("RC522_key.lua")({auth=serialNo})
-    if M then 
-     M.pub("RC522/info/card",serialNo)
-     M.pub("RC522/info/access",access)
+    if _M then 
+     _M.pub("info/RC522/card",serialNo)
+     _M.pub("info/RC522/access",access)
     end
     dofile("RC522_dev.lua")({relay=access})
     end
-	  if RC522.mode=="del"then 
+	  if _RC522.mode=="del"then 
     print(dofile("RC522_key.lua")({del=serialNo})) 
     dofile("RC522_dev.lua")({buz=300})
    end
   end
-  RC522.timer:start()
+  _RC522.timer:start()
  end
 end)
-RC522.timer:interval(500)
-RC522.timer:start()
+_RC522.timer:interval(500)
+_RC522.timer:start()
  end
  return t.run
 end

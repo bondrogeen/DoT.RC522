@@ -27,7 +27,7 @@
    "val": 0,
    "type": "select",
    "values": [0],
-   "name": "GPIO pin SS"
+   "name": "SPI ss (pin)"
   }, {
    "id": "time",
    "val": 500,
@@ -40,26 +40,26 @@
    "val": 1,
    "type": "select",
    "values": [1, 2],
-   "name": "GPIO pin relay"
+   "name": "Relay (pin)"
   }, {
    "id": "del_relay",
    "val": 1000,
    "type": "number",
    "min": 100,
    "max": 9000,
-   "name": "Relay delay"
+   "name": "Relay delay (ms)"
   }, {
    "id": "pin_buz",
    "val": 2,
    "type": "select",
    "values": [1, 2],
-   "name": "GPIO pin buzzer"
+   "name": "Buzzer (pin)"
   }, {
    "id": "pin_btn",
    "val": 4,
    "type": "select",
    "values": [3, 4],
-   "name": "GPIO pin buttone"
+   "name": "Button (pin)"
   }
  ],
  "license": "MIT",
