@@ -4,7 +4,7 @@ _RC522=t
 print(dofile("RC522_SPI.lua")({init=true}))
 print(dofile("RC522_dev.lua")({init=true}))
 _RC522.timer = tmr.create()
-_RC522.timer:register(1000, tmr.ALARM_AUTO, function()
+_RC522.timer:register(1000, tmr.ALARM_AUTO, function()    
  local isTagNear, cardType = dofile("RC522_SPI.lua")({request=true})
  if isTagNear then
   _RC522.timer:stop()
@@ -18,8 +18,8 @@ _RC522.timer:register(1000, tmr.ALARM_AUTO, function()
 	  if not _RC522.mode or _RC522.mode=="auth"then 
     local access = dofile("RC522_key.lua")({auth=serialNo})
     if _M then 
-     _M.pub("info/RC522/card",serialNo)
-     _M.pub("info/RC522/access",access)
+     _M:pub("info/RC522/card",serialNo)
+     _M:pub("info/RC522/access",access)
     end
     dofile("RC522_dev.lua")({relay=access})
     end

@@ -2,55 +2,62 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>RC522</title>
-	<link rel="stylesheet" href="style.css.gz" />
-	<style>
-		.cont {
-			margin-top: 3em;
-		}
-		a {
-			text-decoration: none;
-			color: deeppink;
-		}
-		.key {
-			height: 400px;
-			overflow: auto;
-			padding: 10px;
-			border: 1px solid #cacaca;
-			border-radius: 5px;
-			box-shadow: 1px 2px 20px 1px rgba(0, 0, 0, 0.2);
-			margin-bottom: 10px;
-		}
-		.chip:hover {
-			background-color: #e4e3ea;
-		}
-		.chip {
-			display: inline-block;
-			padding: 0 10px;
-			font-size: 18px;
-			border-radius: 25px;
-			background-color: #ded9f5;
-			margin: 3px;
-			border: 1px solid #0000003b;
-		}
-		.chip span {
-			color: #673ab791;
-			font-weight: bold;
-			font-size: 20px;
-			cursor: pointer;
-			margin-left: 10px;
-		}
-		.chip span:hover {
-			color: #f00;
-		}
-	</style>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+ <title>RC522</title>
+ <link rel="stylesheet" href="style.css.gz" />
+ <style>
+  .cont {
+   margin-top: 3em;
+  }
+
+  a {
+   text-decoration: none;
+   color: deeppink;
+  }
+
+  .key {
+   height: 400px;
+   overflow: auto;
+   padding: 10px;
+   border: 1px solid #cacaca;
+   border-radius: 5px;
+   box-shadow: 1px 2px 20px 1px rgba(0, 0, 0, 0.2);
+   margin-bottom: 10px;
+  }
+
+  .chip:hover {
+   background-color: #e4e3ea;
+  }
+
+  .chip {
+   display: inline-block;
+   padding: 0 10px;
+   font-size: 18px;
+   border-radius: 25px;
+   background-color: #ded9f5;
+   margin: 3px;
+   border: 1px solid #0000003b;
+  }
+
+  .chip span {
+   color: #673ab791;
+   font-weight: bold;
+   font-size: 20px;
+   cursor: pointer;
+   margin-left: 10px;
+  }
+
+  .chip span:hover {
+   color: #f00;
+  }
+
+ </style>
 </head>
 
 <body>
-<div id="loader" class="loader hide"></div>
+ <div id="loader" class="loader hide"></div>
  <div id="sideNav" class="sidenav">
   <span href="javascript:void(0)" class="close" onclick="document.getElementById('sideNav').classList.toggle('open');">&times;</span>
   <div class="in"></div>
@@ -78,126 +85,150 @@
    </div>
   </div>
  </div>
-	<div class="cont">
-		<div class="row">
-			<div class="s12 m2 l2">
-			</div>
-			<div class="s12 m10 l9 ">
-				<div class="row">
-					<div class="xs-12">
-						<h1>RFID RC522</h1>
-					</div>
-				</div>
-				<div class="row">
-					<div class="s12 m6 l4">
-						<h3>Mode</h3>
-						<div class="group three success">
-							<input type="radio" name="rfid_mode" value="add" onchange="mode();" id="s_1">
-							<label for="s_1">add</label>
-							<input checked="" type="radio" name="rfid_mode" value="auth" onchange="mode();" id="s_2">
-							<label for="s_2">auth</label>
-							<input type="radio" name="rfid_mode" value="del" onchange="mode();" id="s_3">
-							<label for="s_3">del</label>
-						</div>
-					</div>
-					<div class="s12 m6 l6">
-					<h3>Control</h3>
-						<div class="group">
-					  <button class="success" onclick="relay();">Open</button>
-					 </div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="s12">
-						<h3>Keys</h3>
-						<div id="key" class="key">
-						</div>
-						<button class="grey" onclick="keyGet();">Refresh</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
-		function send(page, data, callback) {
-			var req = new XMLHttpRequest();
-			req.open("POST", page, true);
-			req.setRequestHeader('Content-Type', 'application/json');
-			req.addEventListener("load", function() {
-				if (req.status < 400) {
-					callback(req.responseText);
-				} else {
-					callback(false);
-				}
-			});
-			req.send(JSON.stringify(data));
-		}
-		function check_rad(val) {
-			var inp = document.getElementsByName(val);
-			for (var i = 0; i < inp.length; i++) {
-				if (inp[i].type == "radio" && inp[i].checked) {
-					return inp[i].value;
-				}
-			}
-		}
-		function mode() {
-			var data = {};
-			data.mode = check_rad("rfid_mode");
-			send("RC522_key.lua", data, function(res) {
-				if (res !== "false") {}
-			});
-		}
+ <div class="cont">
+  <div class="row">
+   <div class="s12 m2 l2">
+   </div>
+   <div class="s12 m10 l9 ">
+    <div class="row">
+     <div class="xs-12">
+      <h1>RFID RC522</h1>
+     </div>
+    </div>
+    <div class="row">
+     <div class="s12 m6 l4">
+      <h3>Mode</h3>
+      <div class="group three success">
+       <input type="radio" name="rfid_mode" value="add" onchange="mode();" id="s_1">
+       <label for="s_1">add</label>
+       <input checked="" type="radio" name="rfid_mode" value="auth" onchange="mode();" id="s_2">
+       <label for="s_2">auth</label>
+       <input type="radio" name="rfid_mode" value="del" onchange="mode();" id="s_3">
+       <label for="s_3">del</label>
+      </div>
+     </div>
+     <div class="s12 m6 l6">
+      <h3>Control</h3>
+      <div class="group">
+       <button class="success" onclick="relay();">Open</button>
+      </div>
+     </div>
+    </div>
+    <div class="row">
+     <div class="s12">
+      <h3>Keys</h3>
+      <div id="key" class="key">
+      </div>
+      <button class="grey" onclick="keyGet();">Refresh</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <script>
+  function send(page, data, callback) {
+   var req = new XMLHttpRequest();
+   req.open("POST", page, true);
+   req.setRequestHeader('Content-Type', 'application/json');
+   req.addEventListener("load", function() {
+    if (req.status < 400) {
+     callback(req.responseText);
+    } else {
+     callback(false);
+    }
+   });
+   req.send(JSON.stringify(data));
+  }
+
+  function check_rad(val) {
+   var inp = document.getElementsByName(val);
+   for (var i = 0; i < inp.length; i++) {
+    if (inp[i].type == "radio" && inp[i].checked) {
+     return inp[i].value;
+    }
+   }
+  }
+
+  function mode() {
+   var data = {};
+   data.mode = check_rad("rfid_mode");
+   if (data.mode != "auth") {
+    intTime(true)
+   } else {
+    intTime(false)
+   }
+   send("RC522_key.lua", data, function(res) {
+    if (res !== "false") {}
+   });
+  }
+
   function relay() {
    console.log("Open");
-			var data = {};
-			data.relay = "true";
-			send("RC522_dev.lua", data, function(res) {
-				if (res !== "false") {}
-			});
-		}
-		function del(d) {
-			send("RC522_key.lua", {
-				del: d
-			}, function(res) {
-				if (res === "true") {
-					document.getElementById(d).remove();
-				}
-			});
-		}
-		setInterval(function() {
-			keyGet();
-		}, 10000);
+   var data = {};
+   data.relay = "true";
+   send("RC522_dev.lua", data, function(res) {
+    if (res !== "false") {}
+   });
+  }
 
-		function keyGet() {
-			send("RC522_key.json", {}, function(res) {
+  function del(d) {
+   send("RC522_key.lua", {
+    del: d
+   }, function(res) {
+    if (res === "true") {
+     document.getElementById(d).remove();
+    }
+   });
+  }
+
+  var timer;
+  var timerON;
+
+  function intTime(d) {
+   if (d) {
+    if (!timerON) {
+     timerON = true;
+     timer = setInterval(function() {
+      keyGet();
+     }, 10000);
+    }
+   } else {
+    timerON = false;
+    clearTimeout(timer);
+   }
+  }
+
+  function keyGet() {
+   send("RC522_key.json", {}, function(res) {
     console.log(res);
-				if (res !== "false" || res !== "error") {
-					try {
-						res = JSON.parse(res);
-						} catch (err) {
-							return;
-						}
-					var key = document.getElementById("key");
-					key.innerHTML = "";
-					for (var i = 0, ln = res.length; i < ln; i++) {
-						if (res[i] !== null) {
-							var div = document.createElement('div');
-							div.id = res[i];
-							div.className = 'chip';
-							div.innerHTML = res[i] + '<span onclick="del(\'' + res[i] + '\')">&times;</span>';
-							key.appendChild(div);
-						}
-					}
-				}
-			});
-		}
-		keyGet();
+    if (res !== "false" || res !== "error") {
+     try {
+      res = JSON.parse(res);
+     } catch (err) {
+      return;
+     }
+     var key = document.getElementById("key");
+     key.innerHTML = "";
+     for (var i = 0, ln = res.length; i < ln; i++) {
+      if (res[i] !== null) {
+       var div = document.createElement('div');
+       div.id = res[i];
+       div.className = 'chip';
+       div.innerHTML = res[i] + '<span onclick="del(\'' + res[i] + '\')">&times;</span>';
+       key.appendChild(div);
+      }
+     }
+    }
+   });
+  }
+  keyGet();
 
-		function logout() {
-			document.cookie = "id=";
-			location.href = '/login.html';
-		}
-	</script>
+  function logout() {
+   document.cookie = "id=";
+   location.href = '/login.html';
+  }
+
+ </script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 return function (t)
 local r
  if t then 
-   _M.pub("comm/RC522_dev/relay","")
+   _M:pub("comm/RC522_dev/relay","")
  end
  return r
 end

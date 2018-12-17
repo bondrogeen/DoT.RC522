@@ -41,7 +41,7 @@ end
 return function (t)
  local r
  if t.add then r=add(t.add) end
- if t.mode then RC522.mode=t.mode r=t.mode end
+ if t.mode then _RC522.mode=t.mode r=t.mode end
  if t.del then r=del(t.del) end
  if t.auth then r=auth(t.auth) and true or false end
  return tostring (r)
